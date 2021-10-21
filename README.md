@@ -34,7 +34,7 @@ The two detecting ranges can be triggered repeatedly in actual use to realize th
 
 ## Installation
 
-Download the library file (https://github.com/DFRobot/DFRobot_A111) and its dependencies (https://github.com/DFRobot/DFRobot_RTU) before use, paste them into the \Arduino\libraries directory, then open the sample folder and run the demo in the folder.
+Download the library file (https://github.com/DFRobot/DFRobot_URM13) and its dependencies (https://github.com/DFRobot/DFRobot_RTU) before use, paste them into the \Arduino\libraries directory, then open the sample folder and run the demo in the folder.
 
 
 ## Methods

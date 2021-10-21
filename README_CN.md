@@ -34,7 +34,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
 
 ## 库安装
 
-要使用这个库, 首先下载库文件( https://github.com/DFRobot/DFRobot_A111 )和依赖文件( https://github.com/DFRobot/DFRobot_RTU ), 将其粘贴到\Arduino\libraries目录中, 然后打开示例文件夹并在文件夹中运行演示。
+要使用这个库, 首先下载库文件( https://github.com/DFRobot/DFRobot_URM13 )和依赖文件( https://github.com/DFRobot/DFRobot_RTU ), 将其粘贴到\Arduino\libraries目录中, 然后打开示例文件夹并在文件夹中运行演示。
 
 
 ## 方法
