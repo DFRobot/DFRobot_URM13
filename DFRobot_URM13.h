@@ -24,24 +24,24 @@
   #define DBG(...)
 #endif
 
-#define URM13_DEFAULT_ADDR_IIC   uint8_t(0x12)        ///< default IIC communication address
+#define URM13_DEFAULT_ADDR_I2C   uint8_t(0x12)        ///< default I2C communication address
 #define URM13_DEFAULT_ADDR_RTU   uint16_t(0x000D)     ///< default RTU communication address
 
-/* URM13 IIC register address */
-#define URM13_ADDR_REG_IIC               uint8_t(0x00)   ///< sensor IIC address register, power off to save the settings, and restart for the settings to take effect, the default value is 0x12
-#define URM13_PID_REG_IIC                uint8_t(0x01)   ///< sensor PID register, the bit is used for product check[can detect the sensor type], the default value is 0x02
-#define URM13_VID_REG_IIC                uint8_t(0x02)   ///< sensor VID register, firmware revision number: the default value 0x10 represents V1.0
-#define URM13_DISTANCE_MSB_REG_IIC       uint8_t(0x03)   ///< distance value register high bit, the marker is 1cm
-#define URM13_DISTANCE_LSB_REG_IIC       uint8_t(0x04)   ///< distance value register low bit
-#define URM13_INTERNAL_TEMP_MSB_REG_IIC  uint8_t(0x05)   ///< internal temperature register high bit, the marker is 0.1℃, data type is signed
-#define URM13_INTERNAL_TEMP_LSB_REG_IIC  uint8_t(0x06)   ///< internal temperature register low bit
-#define URM13_EXTERNAL_TEMP_MSB_REG_IIC  uint8_t(0x07)   ///< external temperature compensation data register high bit, write ambient temperature data to the register for external temperature compensation, the marker is 0.1℃, data type is signed
-#define URM13_EXTERNAL_TEMP_LSB_REG_IIC  uint8_t(0x08)   ///< external temperature compensation data register low bit
-#define URM13_CONFIG_REG_IIC             uint8_t(0x09)   ///< configure register, power off to save the settings, and it takes effect at once, the default value is 0x04
-#define URM13_COMMAND_REG_IIC            uint8_t(0x0A)   ///< command register, write 1 to the bit, trigger once ranging, write 0 to the bit and it's ignored
-#define URM13_NOISE_REG_IIC              uint8_t(0x0B)   ///< power supply noise level register, 0x00-0x0A matches noise level of 0-10。 the parameter indicates the influence of power supply and environment on the sensor;
+/* URM13 I2C register address */
+#define URM13_ADDR_REG_I2C               uint8_t(0x00)   ///< sensor I2C address register, power off to save the settings, and restart for the settings to take effect, the default value is 0x12
+#define URM13_PID_REG_I2C                uint8_t(0x01)   ///< sensor PID register, the bit is used for product check[can detect the sensor type], the default value is 0x02
+#define URM13_VID_REG_I2C                uint8_t(0x02)   ///< sensor VID register, firmware revision number: the default value 0x10 represents V1.0
+#define URM13_DISTANCE_MSB_REG_I2C       uint8_t(0x03)   ///< distance value register high bit, the marker is 1cm
+#define URM13_DISTANCE_LSB_REG_I2C       uint8_t(0x04)   ///< distance value register low bit
+#define URM13_INTERNAL_TEMP_MSB_REG_I2C  uint8_t(0x05)   ///< internal temperature register high bit, the marker is 0.1℃, data type is signed
+#define URM13_INTERNAL_TEMP_LSB_REG_I2C  uint8_t(0x06)   ///< internal temperature register low bit
+#define URM13_EXTERNAL_TEMP_MSB_REG_I2C  uint8_t(0x07)   ///< external temperature compensation data register high bit, write ambient temperature data to the register for external temperature compensation, the marker is 0.1℃, data type is signed
+#define URM13_EXTERNAL_TEMP_LSB_REG_I2C  uint8_t(0x08)   ///< external temperature compensation data register low bit
+#define URM13_CONFIG_REG_I2C             uint8_t(0x09)   ///< configure register, power off to save the settings, and it takes effect at once, the default value is 0x04
+#define URM13_COMMAND_REG_I2C            uint8_t(0x0A)   ///< command register, write 1 to the bit, trigger once ranging, write 0 to the bit and it's ignored
+#define URM13_NOISE_REG_I2C              uint8_t(0x0B)   ///< power supply noise level register, 0x00-0x0A matches noise level of 0-10。 the parameter indicates the influence of power supply and environment on the sensor;
                                                          ///< the smaller the noise level, the more accurate the distance value obtained by the sensor
-#define URM13_SENSITIVITY_REG_IIC        uint8_t(0x0C)   ///< ranging sensibility setting register, 0x00-0x0A:sensitivity level 0-10。 to set the sensor ranging sensitivity in large range (40-900cm);
+#define URM13_SENSITIVITY_REG_I2C        uint8_t(0x0C)   ///< ranging sensibility setting register, 0x00-0x0A:sensitivity level 0-10。 to set the sensor ranging sensitivity in large range (40-900cm);
                                                          ///< the smaller the value, and the higher the sensitivity, power off to save the settings, and it takes effect at once
 
 /* URM13 RTU register address */
@@ -90,15 +90,15 @@ public:
   } __attribute__ ((packed)) sPWRCTRL_t;
 
   /**
-   * @struct sBasicInfoIIC_t
-   * @brief device information structure in IIC mode
+   * @struct sBasicInfoI2C_t
+   * @brief device information structure in I2C mode
    */
   typedef struct
   {
-    uint8_t addr;   /**< IIC communication address, the default value is 0x12, module device address(1~127) */
-    uint8_t PID;    /**< IIC mode module PID, default value 0x02 the bit is used for product check[can detect the sensor type] */
-    uint8_t VID;    /**< IIC mode module VID, firmware revision number:0x10 represents V1.0 */
-  }sBasicInfoIIC_t;
+    uint8_t addr;   /**< I2C communication address, the default value is 0x12, module device address(1~127) */
+    uint8_t PID;    /**< I2C mode module PID, default value 0x02 the bit is used for product check[can detect the sensor type] */
+    uint8_t VID;    /**< I2C mode module VID, firmware revision number:0x10 represents V1.0 */
+  }sBasicInfoI2C_t;
 
   /**
    * @struct sBasicInfoRTU_t
@@ -161,7 +161,7 @@ public:
   typedef enum
   {
     eRtuInterface = 0,   /**< modbusRTU communication mode */
-    eI2cInterface,       /**< IIC communication mode */
+    eI2cInterface,       /**< I2C communication mode */
     // eTrigInterface,      /**< TRIG communication mode */
   }eInterfaceMode_t;
 
@@ -187,7 +187,7 @@ public:
   /**
    * @fn refreshBasicInfo
    * @brief retrieve the basic information from the sensor and buffer it into the structure that stores information:
-   * @n       IIC interface mode: addr_IIC, PID_IIC, VID_IIC
+   * @n       I2C interface mode: addr_I2C, PID_I2C, VID_I2C
    * @n       RTU interface mode: PID_RTU, VID_RTU, addr_RTU, baudrate_RTU, checkbit_RTU, stopbit_RTU
    * @return None
    */
@@ -196,7 +196,7 @@ public:
   /**
    * @fn setADDR
    * @brief set the module communication address, power off to save the settings, and restart for the settings to take effect
-   * @param addr device address to be set, IIC address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
+   * @param addr device address to be set, I2C address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
    * @return None
    */
   void setADDR(uint8_t addr);
@@ -284,7 +284,7 @@ protected:
 
 public:
   /* the structure storing basic sensor information */
-  sBasicInfoIIC_t basicInfoIIC;
+  sBasicInfoI2C_t basicInfoI2C;
   sBasicInfoRTU_t basicInfoRTU;
 
 private:
@@ -294,20 +294,20 @@ private:
 };
 
 
-/***************** initialization, read and write of IIC interface ******************************/
+/***************** initialization, read and write of I2C interface ******************************/
 
-class DFRobot_URM13_IIC:public DFRobot_URM13
+class DFRobot_URM13_I2C:public DFRobot_URM13
 {
 public:
   /**
-   * @fn DFRobot_URM13_IIC
-   * @brief constructor, configure sensor IIC communication address according to module DIP switch status
-   * @param iicAddr RotaryEncoder IIC communication address
+   * @fn DFRobot_URM13_I2C
+   * @brief constructor, configure sensor I2C communication address according to module DIP switch status
+   * @param i2cAddr RotaryEncoder I2C communication address
    * @param pWire Wire object is defined in Wire.h, so just use &Wire and the methods in Wire can be pointed to and used
    * @param interfaceURM13 the current interface mode: eRtuInterface, eI2cInterface
    * @return None
    */
-  DFRobot_URM13_IIC(uint8_t iicAddr=URM13_DEFAULT_ADDR_IIC, TwoWire *pWire = &Wire, eInterfaceMode_t interfaceURM13=eI2cInterface);
+  DFRobot_URM13_I2C(uint8_t i2cAddr=URM13_DEFAULT_ADDR_I2C, TwoWire *pWire = &Wire, eInterfaceMode_t interfaceURM13=eI2cInterface);
 
   /**
    * @fn begin
@@ -323,7 +323,7 @@ public:
 protected:
   /**
    * @fn writeReg
-   * @brief write register values through IIC bus
+   * @brief write register values through I2C bus
    * @param reg  register address 8bits
    * @param pBuf to write data storage and buffer
    * @param size to write data length
@@ -333,7 +333,7 @@ protected:
 
   /**
    * @fn readReg
-   * @brief read register values through IIC bus
+   * @brief read register values through I2C bus
    * @param reg  register address 8bits
    * @param pBuf to read data storage and buffer
    * @param size to read data length
@@ -342,8 +342,8 @@ protected:
   virtual size_t readReg(uint8_t reg, void* pBuf, size_t size);
 
 private:
-  TwoWire *_pWire;   // pointer to IIC communication method
-  uint8_t _deviceAddr;   // IIC communication device address
+  TwoWire *_pWire;   // pointer to I2C communication method
+  uint8_t _deviceAddr;   // I2C communication device address
 };
 
 

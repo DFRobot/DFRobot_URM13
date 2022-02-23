@@ -1,6 +1,6 @@
 /*!
  * @file  DFRobot_URM13.cpp
- * @brief  DFRobot_URM13.cpp Initialize the IIC,
+ * @brief  DFRobot_URM13.cpp Initialize the I2C,
  * @n      obtain URM13 basic information, measure distance and internal temperature, select the sensor communication interface and set the sensor parameters
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
@@ -34,7 +34,7 @@ int DFRobot_URM13::begin(void)
 
   }else if (_deviceInterface == eI2cInterface){
     uint8_t id;
-    if(0 == readReg(URM13_PID_REG_IIC, &id, sizeof(id))){   // Judge whether the data bus is successful
+    if(0 == readReg(URM13_PID_REG_I2C, &id, sizeof(id))){   // Judge whether the data bus is successful
       DBG("ERR_DATA_BUS");
       return ERR_DATA_BUS;
     }
@@ -63,7 +63,7 @@ void DFRobot_URM13::refreshBasicInfo(void)
     basicInfoRTU.checkbit = buf[8];
     basicInfoRTU.stopbit = buf[9];
   }else if (_deviceInterface == eI2cInterface){
-    readReg(URM13_ADDR_REG_IIC, &basicInfoIIC, 3);   // IIC basic information length is 3 bytes
+    readReg(URM13_ADDR_REG_I2C, &basicInfoI2C, 3);   // I2C basic information length is 3 bytes
   }
 }
 
@@ -78,7 +78,7 @@ void DFRobot_URM13::setADDR(uint8_t addr)
 
   }else if (_deviceInterface == eI2cInterface){
     if((0x01 <= addr) && (0x7F >= addr)){
-      writeReg(URM13_ADDR_REG_IIC, &addr, sizeof(addr));
+      writeReg(URM13_ADDR_REG_I2C, &addr, sizeof(addr));
     }
   }
 }
@@ -91,20 +91,20 @@ uint16_t DFRobot_URM13::getDistanceCm(void)
   if (_deviceInterface == eRtuInterface){
     readReg(URM13_DISTANCE_REG_RTU, buf, sizeof(buf));
   }else if (_deviceInterface == eI2cInterface){
-    readReg(URM13_DISTANCE_MSB_REG_IIC, buf, sizeof(buf));
+    readReg(URM13_DISTANCE_MSB_REG_I2C, buf, sizeof(buf));
   }
 
   distanceCm = (buf[0] << 8) | buf[1];
-  if(eMeasureRangeModeLong == _measureRangeMode){
-    if((40 > distanceCm) || (900 < distanceCm)){
-      distanceCm = 0;
-    }
+  // if(eMeasureRangeModeLong == _measureRangeMode){
+  //   if((40 > distanceCm) || (900 < distanceCm)){
+  //     distanceCm = 0;
+  //   }
 
-  }else if(eMeasureRangeModeLong == eMeasureRangeModeShort){
-    if((15 > distanceCm) || (150 < distanceCm)){
-      distanceCm = 0;
-    }
-  }
+  // }else if(eMeasureRangeModeLong == eMeasureRangeModeShort){
+  //   if((15 > distanceCm) || (150 < distanceCm)){
+  //     distanceCm = 0;
+  //   }
+  // }
 
   return distanceCm;
 }
@@ -115,7 +115,7 @@ float DFRobot_URM13::getInternalTempretureC(void)
   if (_deviceInterface == eRtuInterface){
     readReg(URM13_INTERNAL_TEMP_REG_RTU, buf, sizeof(buf));
   }else if (_deviceInterface == eI2cInterface){
-    readReg(URM13_INTERNAL_TEMP_MSB_REG_IIC, buf, sizeof(buf));
+    readReg(URM13_INTERNAL_TEMP_MSB_REG_I2C, buf, sizeof(buf));
   }
 
   return (float)(int16_t)((buf[0] << 8) | buf[1]) / 10;
@@ -132,7 +132,7 @@ void DFRobot_URM13::setExternalTempretureC(float temp)
     if (_deviceInterface == eRtuInterface){
       writeReg(URM13_EXTERNAL_TEMP_REG_RTU, buf, sizeof(buf));
     }else if (_deviceInterface == eI2cInterface){
-      writeReg(URM13_EXTERNAL_TEMP_MSB_REG_IIC, buf, sizeof(buf));
+      writeReg(URM13_EXTERNAL_TEMP_MSB_REG_I2C, buf, sizeof(buf));
     }
   }
 }
@@ -148,9 +148,9 @@ void DFRobot_URM13::setMeasureMode(uint8_t mode)
 
   }else if (_deviceInterface == eI2cInterface){
     // uint8_t data = 0;
-    // readReg(URM13_CONFIG_REG_IIC, &data, sizeof(data));
+    // readReg(URM13_CONFIG_REG_I2C, &data, sizeof(data));
     // DBG(data);
-    writeReg(URM13_CONFIG_REG_IIC, &mode, sizeof(mode));
+    writeReg(URM13_CONFIG_REG_I2C, &mode, sizeof(mode));
   }
 
   if(mode & eMeasureRangeModeShort){
@@ -173,7 +173,7 @@ void DFRobot_URM13::passiveMeasurementTRIG(void)
 
   }else if (_deviceInterface == eI2cInterface){
     uint8_t mode = 0x01;
-    writeReg(URM13_COMMAND_REG_IIC, &mode, sizeof(mode));
+    writeReg(URM13_COMMAND_REG_I2C, &mode, sizeof(mode));
   }
 }
 
@@ -186,7 +186,7 @@ uint8_t DFRobot_URM13::getNoiseLevel(void)
     mode = buf[1];
 
   }else if (_deviceInterface == eI2cInterface){
-    readReg(URM13_NOISE_REG_IIC, &mode, sizeof(mode));
+    readReg(URM13_NOISE_REG_I2C, &mode, sizeof(mode));
   }
 
   return mode;
@@ -200,29 +200,29 @@ void DFRobot_URM13::setMeasureSensitivity(uint8_t mode)
     writeReg(URM13_SENSITIVITY_REG_RTU, buf, sizeof(buf));
 
   }else if (_deviceInterface == eI2cInterface){
-    writeReg(URM13_SENSITIVITY_REG_IIC, &mode, sizeof(mode));
+    writeReg(URM13_SENSITIVITY_REG_I2C, &mode, sizeof(mode));
   }
 }
 
 
-/************ Initialization of IIC interfaces reading and writing ***********/
+/************ Initialization of I2C interfaces reading and writing ***********/
 
-DFRobot_URM13_IIC::DFRobot_URM13_IIC(uint8_t iicAddr, TwoWire *pWire, eInterfaceMode_t interfaceURM13)
+DFRobot_URM13_I2C::DFRobot_URM13_I2C(uint8_t i2cAddr, TwoWire *pWire, eInterfaceMode_t interfaceURM13)
   :DFRobot_URM13(interfaceURM13)
 {
-  _deviceAddr = iicAddr;
+  _deviceAddr = i2cAddr;
   _pWire = pWire;
 }
 
-int DFRobot_URM13_IIC::begin(void)
+int DFRobot_URM13_I2C::begin(void)
 {
-  _pWire->begin();   // Wire.h（IIC）library function initialize wire library
+  _pWire->begin();   // Wire.h（I2C）library function initialize wire library
   delay(50);
 
   return DFRobot_URM13::begin();   // Use the initialization function of the parent class
 }
 
-void DFRobot_URM13_IIC::writeReg(uint8_t reg, const void* pBuf, size_t size)
+void DFRobot_URM13_I2C::writeReg(uint8_t reg, const void* pBuf, size_t size)
 {
   if(pBuf == NULL){
     DBG("pBuf ERROR!! : null pointer");
@@ -239,7 +239,7 @@ void DFRobot_URM13_IIC::writeReg(uint8_t reg, const void* pBuf, size_t size)
   _pWire->endTransmission();
 }
 
-size_t DFRobot_URM13_IIC::readReg(uint8_t reg, void* pBuf, size_t size)
+size_t DFRobot_URM13_I2C::readReg(uint8_t reg, void* pBuf, size_t size)
 {
   size_t count = 0;
   if(NULL == pBuf){

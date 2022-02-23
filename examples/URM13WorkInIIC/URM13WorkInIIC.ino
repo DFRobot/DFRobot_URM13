@@ -1,6 +1,6 @@
 /*!
- * @file  URM13WorkInIIC.ino
- * @brief  This demo shows how URM13 works in IIC interface mode.
+ * @file  URM13WorkInI2C.ino
+ * @brief  This demo shows how URM13 works in I2C interface mode.
  * @n      can obtain and change the sensor basic information, configure parameters and get the current distance value and current temperature value
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
@@ -23,9 +23,9 @@
 
 /*
  * instantiate an object to drive the sensor;
- * need to set the sensor IIC address and the IIC bus used by it, keep the default value if it’s not changed.
+ * need to set the sensor I2C address and the I2C bus used by it, keep the default value if it’s not changed.
  */
-DFRobot_URM13_IIC sensor(/*iicAddr = */0x12, /*iicBus = */&Wire);
+DFRobot_URM13_I2C sensor(/*i2cAddr = */0x12, /*i2cBus = */&Wire);
 
 // open the macro if you want to use data measuring completion signal from busyPin as a measure, note: use pin numbers based on the main controller settings using
 // #define BUSYPIN_SIGNAL
@@ -50,25 +50,25 @@ void setup()
   Serial.println("Begin ok!");
 
   /**
-   * retrieve basic information from the sensor and buffer it into basicInfoIIC, the structure that stores information
+   * retrieve basic information from the sensor and buffer it into basicInfoI2C, the structure that stores information
    */
   sensor.refreshBasicInfo();
 
   /* I2C slave address of the module, default value is 0x12, module device address(1~127) */
   Serial.print("mailing address: 0x");
-  Serial.println(sensor.basicInfoIIC.addr, HEX);
+  Serial.println(sensor.basicInfoI2C.addr, HEX);
 
   /* module PID, default value is 0x02 the bit is used for product check[can detect the sensor type] */
   Serial.print("PID: 0x0");
-  Serial.println(sensor.basicInfoIIC.PID, HEX);
+  Serial.println(sensor.basicInfoI2C.PID, HEX);
 
   /* module VID, firmware revision number：0x10 represents V1.0 */
   Serial.print("VID: 0x");
-  Serial.println(sensor.basicInfoIIC.VID, HEX);
+  Serial.println(sensor.basicInfoI2C.VID, HEX);
 
   /**
    * set the module communication address, power off to save the settings, and restart for the settings to take effect
-   * addr device address to be set, IIC address range(1~127 is 0x01~0x7F)
+   * addr device address to be set, I2C address range(1~127 is 0x01~0x7F)
    */
   sensor.setADDR(0x12);
 

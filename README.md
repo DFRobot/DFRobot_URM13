@@ -26,7 +26,7 @@ The two detecting ranges can be triggered repeatedly in actual use to realize th
 
 ## Summary
 
-* The sensor supports UART(modbus-rtu), IIC and TRIG for data output, which brings more possibilities for actual using scenarios.<br>
+* The sensor supports UART(modbus-rtu), I2C and TRIG for data output, which brings more possibilities for actual using scenarios.<br>
 * Can obtain the sensor basic information, current distance value and current temperature value.<br>
 * Can configure the sensor communication address, parameters, etc.<br>
 * URM13 provides users with two built-in measuring ranges for meeting different application requirements, 15-150cm small range and 40-900cm large range.<br>
@@ -54,7 +54,7 @@ Download the library file (https://github.com/DFRobot/DFRobot_URM13) and its dep
   /**
    * @fn refreshBasicInfo
    * @brief retrieve the basic information from the sensor and buffer it into the structure that stores information:
-   * @n       IIC interface mode: addr_IIC, PID_IIC, VID_IIC
+   * @n       I2C interface mode: addr_I2C, PID_I2C, VID_I2C
    * @n       RTU interface mode: PID_RTU, VID_RTU, addr_RTU, baudrate_RTU, checkbit_RTU, stopbit_RTU
    * @return None
    */
@@ -63,7 +63,7 @@ Download the library file (https://github.com/DFRobot/DFRobot_URM13) and its dep
   /**
    * @fn setADDR
    * @brief set the module communication address, power off to save the settings, and restart for the settings to take effect
-   * @param addr device address to be set, IIC address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
+   * @param addr device address to be set, I2C address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
    * @return None
    */
   void setADDR(uint8_t addr);

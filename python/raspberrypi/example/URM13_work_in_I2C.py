@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*
 '''!
-  @file  URM13_work_in_IIC.py
-  @brief  This demo shows how URM13 works in IIC interface mode.
+  @file  URM13_work_in_I2C.py
+  @brief  This demo shows how URM13 works in I2C interface mode.
   @n      can obtain and change the sensor basic information, configure parameters and get the current distance value and current temperature value
   @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
   @license  The MIT License (MIT)
@@ -38,22 +38,22 @@ def setup():
   '''
     # read module basic information
     # retrieve basic information from the sensor and buffer it into a variable that stores information:
-    # addr_IIC, PID_IIC, VID_IIC
+    # addr_I2C, PID_I2C, VID_I2C
   '''
   sensor.read_basic_info()
 
   # module I2C slave address, the default value is 0x12, module device address(1~127)
-  print("baudrate: 0x%x" %sensor.addr_IIC)
+  print("baudrate: 0x%x" %sensor.addr_I2C)
 
   # module PID, the default value is 0x02 the bit is used for product check[can detect the sensor type]
-  print("PID: 0x0%x" %sensor.PID_IIC)
+  print("PID: 0x0%x" %sensor.PID_I2C)
 
   # module VID, firmware revision number：0x10 represents V1.0
-  print("VID: 0x%x" %sensor.VID_IIC)
+  print("VID: 0x%x" %sensor.VID_I2C)
 
   '''
     # set the module communication address, power off to save the settings, and restart for the settings to take effect
-    # addr device address to be set, IIC address range(1~127 is 0x01~0x7F)
+    # addr device address to be set, I2C address range(1~127 is 0x01~0x7F)
   '''
   sensor.set_addr(0x12)
 

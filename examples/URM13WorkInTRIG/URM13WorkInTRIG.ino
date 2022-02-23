@@ -1,7 +1,7 @@
 /*!
  * @file  URM13WorkInTRIG.ino
  * @brief  This demo shows how URM13 works in TRIG interface mode.
- * @n      can obtain the sensor current distance value and change its parameters through IIC
+ * @n      can obtain the sensor current distance value and change its parameters through I2C
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
  * @author  [qsjhyy](yihuan.huang@dfrobot.com)
@@ -20,11 +20,11 @@
  * After the mode switch succeeds, users can disconnect the corresponding pin short-circuiting, and the switched mode will be recorded by the sensor and take effect permanently.
  */
 
-/* if you want to use IIC to change sensor parameters and mode, open the macro and configure the following api */
-// #define IIC_CONFIG
-#ifdef IIC_CONFIG
-  /* instantiate an object with IIC communication to drive the sensor */
-  DFRobot_URM13_IIC sensor(/*iicAddr = */0x12, /*iicBus = */&Wire);
+/* if you want to use I2C to change sensor parameters and mode, open the macro and configure the following api */
+// #define I2C_CONFIG
+#ifdef I2C_CONFIG
+  /* instantiate an object with I2C communication to drive the sensor */
+  DFRobot_URM13_I2C sensor(/*i2cAddr = */0x12, /*i2cBus = */&Wire);
 #endif
 
 /*
@@ -55,13 +55,13 @@ void setup()
 
   Serial.println("TRIG pin begin ok!");
 
-#ifdef IIC_CONFIG
+#ifdef I2C_CONFIG
   // initialize the sensor
   while( NO_ERR != sensor.begin() ){
     Serial.println("Communication with device failed, please check connection");
     delay(3000);
   }
-  Serial.println("IIC begin ok!");
+  Serial.println("I2C begin ok!");
 
   /**
    * set measure mode

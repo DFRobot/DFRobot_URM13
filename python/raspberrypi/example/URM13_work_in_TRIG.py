@@ -26,9 +26,9 @@ from DFRobot_URM13 import *
 
   # After the mode switch succeeds, users can disconnect the corresponding pin short-circuiting, and the switched mode will be recorded by the sensor and take effect permanently.
 
-  # the sensor parameters can be configured by instantiating an object with IIC communication
+  # the sensor parameters can be configured by instantiating an object with I2C communication
 '''
-# sensor = DFRobot_URM13_IIC(i2c_addr = 0x12, bus = 1)
+# sensor = DFRobot_URM13_I2C(i2c_addr = 0x12, bus = 1)
 
 
 '''

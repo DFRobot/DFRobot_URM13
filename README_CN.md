@@ -26,7 +26,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
 
 ## 概述
 
-* 传感器数据可以由UART(modbus-rtu)、IIC和TRIG三种接口输出, 满足多种接口环境。<br>
+* 传感器数据可以由UART(modbus-rtu)、I2C和TRIG三种接口输出, 满足多种接口环境。<br>
 * 可以获取传感器基本信息、当前距离测量值和当前温度测量值。<br>
 * 可以配置传感器通信地址, 测量参数等。<br>
 * 为了满足不同的用户需求, URM13内置两段测距量程: 小量程15-150cm; 大量程40-900cm。<br>
@@ -54,7 +54,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
   /**
    * @fn refreshBasicInfo
    * @brief 重新从传感器获取其基本信息, 并缓存到存储信息的结构体里面:
-   * @n       IIC接口模式: addr_IIC, PID_IIC, VID_IIC
+   * @n       I2C接口模式: addr_I2C, PID_I2C, VID_I2C
    * @n       RTU接口模式: PID_RTU, VID_RTU, addr_RTU, baudrate_RTU, checkbit_RTU, stopbit_RTU
    * @return None
    */
@@ -63,7 +63,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
   /**
    * @fn setADDR
    * @brief 设置模块的通信地址, 断电保存, 重启后生效
-   * @param addr 要设置的设备地址, IIC地址范围(1~127即0x01~0x7F), RTU地址范围(1~247即0x0001-0x00F7)
+   * @param addr 要设置的设备地址, I2C地址范围(1~127即0x01~0x7F), RTU地址范围(1~247即0x0001-0x00F7)
    * @return None
    */
   void setADDR(uint8_t addr);
@@ -93,7 +93,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
   /**
    * @fn setMeasureMode
    * @brief 设置测量相关模式
-   * @param mode 需要设置的测量相关模式, 下列模式相与为mode:
+   * @param mode 需要设置的测量相关模式, 下列模式经过或运算后得到mode:
    * @n       eInternalTemp: 使用板载温度补偿功能, eExternalTemp: 使用外部温度补偿功能(需用户写入外部温度)
    * @n       eTempCompModeEn: 开启温度补偿功能, eTempCompModeDis: 关闭温度补偿功能
    * @n       eAutoMeasureModeEn: 自动测距, eAutoMeasureModeDis: 被动测距
@@ -139,7 +139,7 @@ URM13是一款开放式单探头超声波测距传感器, 支持TRIG脉冲触发
   /**
    * @fn setCheckbitStopbit
    * @brief UART接口模式下, 设置模块的校验位和停止位
-   * @param mode 要设置的模式, 下列模式相与为mode:
+   * @param mode 要设置的模式, 下列模式经过或运算后得到mode:
    * @n     校验位:
    * @n           eCheckBitNone
    * @n           eCheckBitEven

@@ -32,40 +32,40 @@ formatter = logging.Formatter("%(asctime)s - [%(filename)s %(funcName)s]:%(linen
 ph.setFormatter(formatter) 
 logger.addHandler(ph)
 
-## default IIC communication address
-URM13_DEFAULT_ADDR_IIC   = 0x12
+## default I2C communication address
+URM13_DEFAULT_ADDR_I2C   = 0x12
 ## default RTU communication address
 URM13_DEFAULT_ADDR_RTU   = 0x000D
 
-# URM13 IIC register address
-## sensor IIC address register, power off to save the settings, and restart for the settings to take effect, the default value is 0x12
-URM13_ADDR_REG_IIC               = 0x00
+# URM13 I2C register address
+## sensor I2C address register, power off to save the settings, and restart for the settings to take effect, the default value is 0x12
+URM13_ADDR_REG_I2C               = 0x00
 ## sensor PID register, the bit is used for product check[can detect the sensor type], the default value is 0x02
-URM13_PID_REG_IIC                = 0x01
+URM13_PID_REG_I2C                = 0x01
 ## sensor VID register, firmware revision number: default value 0x10 represents V1.0
-URM13_VID_REG_IIC                = 0x02
+URM13_VID_REG_I2C                = 0x02
 ## distance value register high bit, the marker is 1cm
-URM13_DISTANCE_MSB_REG_IIC       = 0x03
+URM13_DISTANCE_MSB_REG_I2C       = 0x03
 ## distance value register low bit
-URM13_DISTANCE_LSB_REG_IIC       = 0x04
+URM13_DISTANCE_LSB_REG_I2C       = 0x04
 ## internal temperature register high bit, the marker is 0.1℃, data type is signed
-URM13_INTERNAL_TEMP_MSB_REG_IIC  = 0x05
+URM13_INTERNAL_TEMP_MSB_REG_I2C  = 0x05
 ## internal temperature register low bit
-URM13_INTERNAL_TEMP_LSB_REG_IIC  = 0x06
+URM13_INTERNAL_TEMP_LSB_REG_I2C  = 0x06
 ## external temperature compensation data register high bit, write ambient temperature data to the register for external temperature compensation, the marker is 0.1℃, data type is signed
-URM13_EXTERNAL_TEMP_MSB_REG_IIC  = 0x07
+URM13_EXTERNAL_TEMP_MSB_REG_I2C  = 0x07
 ## external temperature compensation data register low bit
-URM13_EXTERNAL_TEMP_LSB_REG_IIC  = 0x08
+URM13_EXTERNAL_TEMP_LSB_REG_I2C  = 0x08
 ## configure register, power off to save the settings, and it takes effect at once, the default value is 0x04
-URM13_CONFIG_REG_IIC             = 0x09
+URM13_CONFIG_REG_I2C             = 0x09
 ## command register, write 1 to the bit, trigger once ranging, write 0 to the bit and it's ignored
-URM13_COMMAND_REG_IIC            = 0x0A
+URM13_COMMAND_REG_I2C            = 0x0A
 ## power supply noise level register, 0x00-0x0A matches noise level of 0-10。 the parameter indicates the influence of power supply and environment on the sensor;
 ## the smaller the noise level, the more accurate the distance value obtained by the sensor
-URM13_NOISE_REG_IIC              = 0x0B
+URM13_NOISE_REG_I2C              = 0x0B
 ## ranging sensibility setting register, 0x00-0x0A:sensitivity level 0-10。 to set the sensor ranging sensitivity in large range (40-900cm);
 ## the smaller the value, and the higher the sensitivity, power off to save the settings, and it takes effect at once
-URM13_SENSITIVITY_REG_IIC        = 0x0C
+URM13_SENSITIVITY_REG_I2C        = 0x0C
 
 # URM13 RTU register address
 ## module PID memory register, the bit is used for product check[can detect the module type], the default value is 0x0003
@@ -115,9 +115,9 @@ class DFRobot_URM13(object):
     E_I2C_INTERFACE = 1
     # E_TRIG_INTERFACE = 2
 
-    addr_IIC = 0
-    PID_IIC = 0
-    VID_IIC = 0
+    addr_I2C = 0
+    PID_I2C = 0
+    VID_I2C = 0
 
     PID_RTU = 0
     VID_RTU = 0
@@ -147,12 +147,12 @@ class DFRobot_URM13(object):
         if self._device_interface == self.E_RTU_INTERFACE:
             id = self._read_reg(URM13_PID_REG_RTU, 1)[0]
         elif self._device_interface == self.E_I2C_INTERFACE:
-            id = self._read_reg(URM13_PID_REG_IIC, 1)[0]
+            id = self._read_reg(URM13_PID_REG_I2C, 1)[0]
         else:
           id = 0
 
         logger.info(id)
-        if id not in  [0x02, 0x0003]:   # 0x02 represents the id read by IIC 8-bit register, 0x0003 represents the id read by modbus 16-bit register
+        if id not in  [0x02, 0x0003]:   # 0x02 represents the id read by I2C 8-bit register, 0x0003 represents the id read by modbus 16-bit register
             ret = False
 
         return ret
@@ -161,7 +161,7 @@ class DFRobot_URM13(object):
         '''!
           @brief read module basic information
           @n retrieve basic information from the sensor and buffer it into a variable that stores information:
-          @n IIC interface mode: addr_IIC, PID_IIC, VID_IIC
+          @n I2C interface mode: addr_I2C, PID_I2C, VID_I2C
           @n RTU interface mode: PID_RTU, VID_RTU, addr_RTU, baudrate_RTU, checkbit_RTU, stopbit_RTU
         '''
         if self._device_interface == self.E_RTU_INTERFACE:
@@ -173,15 +173,15 @@ class DFRobot_URM13(object):
             self.checkbit_RTU = (info_buf[4] & 0xFF00) >> 8
             self.stopbit_RTU = info_buf[4] & 0x00FF
         elif self._device_interface == self.E_I2C_INTERFACE:
-            info_buf = self._read_reg(URM13_ADDR_REG_IIC, 3)   # IIC basic information length is 3 bytes
-            self.addr_IIC = info_buf[0]
-            self.PID_IIC = info_buf[1]
-            self.VID_IIC = info_buf[2]
+            info_buf = self._read_reg(URM13_ADDR_REG_I2C, 3)   # I2C basic information length is 3 bytes
+            self.addr_I2C = info_buf[0]
+            self.PID_I2C = info_buf[1]
+            self.VID_I2C = info_buf[2]
 
     def set_addr(self, addr):
         '''!
           @brief set the module communication address, power off to save the settings, and restart for the settings to take effect
-          @param addr device address to be set, IIC address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
+          @param addr device address to be set, I2C address range(1~127 is 0x01~0x7F), RTU address range(1~247 is 0x0001-0x00F7)
         '''
         if self._device_interface == self.E_RTU_INTERFACE:
             if(0x0001 <= addr) and (0x00F7 >= addr):
@@ -189,7 +189,7 @@ class DFRobot_URM13(object):
 
         elif self._device_interface == self.E_I2C_INTERFACE:
             if(0x01 <= addr) and (0x7F >= addr):
-              self._write_reg(URM13_ADDR_REG_IIC, [addr])
+              self._write_reg(URM13_ADDR_REG_I2C, [addr])
 
     def get_distance_cm(self):
         '''!
@@ -200,7 +200,7 @@ class DFRobot_URM13(object):
             distance = self._read_reg(URM13_DISTANCE_REG_RTU, 1)[0]
 
         elif self._device_interface == self.E_I2C_INTERFACE:
-            data = self._read_reg(URM13_DISTANCE_MSB_REG_IIC, 2)
+            data = self._read_reg(URM13_DISTANCE_MSB_REG_I2C, 2)
             distance = (data[0] << 8) | data[1]
         else:
             distance = 0
@@ -223,7 +223,7 @@ class DFRobot_URM13(object):
             internal_temp = self._read_reg(URM13_INTERNAL_TEMP_REG_RTU, 1)[0]
 
         elif self._device_interface == self.E_I2C_INTERFACE:
-            data = self._read_reg(URM13_INTERNAL_TEMP_MSB_REG_IIC, 2)
+            data = self._read_reg(URM13_INTERNAL_TEMP_MSB_REG_I2C, 2)
             internal_temp = (data[0] << 8) | data[1]
         else:
             internal_temp = 0
@@ -241,7 +241,7 @@ class DFRobot_URM13(object):
             self._write_reg(URM13_EXTERNAL_TEMP_REG_RTU, [external_temp])
         elif self._device_interface == self.E_I2C_INTERFACE:
             data = [(external_temp & 0xFF00) >> 8, external_temp & 0x00FF]
-            self._write_reg(URM13_EXTERNAL_TEMP_MSB_REG_IIC, data)
+            self._write_reg(URM13_EXTERNAL_TEMP_MSB_REG_I2C, data)
 
     def set_measure_mode(self, mode=0):
         '''!
@@ -255,7 +255,7 @@ class DFRobot_URM13(object):
         if self._device_interface == self.E_RTU_INTERFACE:
             self._write_reg(URM13_CONFIG_REG_RTU, [mode])
         elif self._device_interface == self.E_I2C_INTERFACE:
-            self._write_reg(URM13_CONFIG_REG_IIC, [mode])
+            self._write_reg(URM13_CONFIG_REG_I2C, [mode])
 
         if self._measure_range_mode & self.E_MEASURE_RANGE_MODE_SHORT:
           self._measure_range_mode = self.E_MEASURE_RANGE_MODE_SHORT
@@ -275,7 +275,7 @@ class DFRobot_URM13(object):
 
         elif self._device_interface == self.E_I2C_INTERFACE:
             data = [0x01]
-            self._write_reg(URM13_COMMAND_REG_IIC, data)
+            self._write_reg(URM13_COMMAND_REG_I2C, data)
 
         time.sleep(0.1)
 
@@ -288,7 +288,7 @@ class DFRobot_URM13(object):
             noise_level = self._read_reg(URM13_NOISE_REG_RTU, 1)[0]
 
         elif self._device_interface == self.E_I2C_INTERFACE:
-            noise_level = self._read_reg(URM13_NOISE_REG_IIC, 1)[0]
+            noise_level = self._read_reg(URM13_NOISE_REG_I2C, 1)[0]
         else:
             noise_level = 0
 
@@ -302,7 +302,7 @@ class DFRobot_URM13(object):
         if self._device_interface == self.E_RTU_INTERFACE:
             self._write_reg(URM13_SENSITIVITY_REG_RTU, [measure_sensitivity])
         elif self._device_interface == self.E_I2C_INTERFACE:
-            self._write_reg(URM13_SENSITIVITY_REG_IIC, [measure_sensitivity])
+            self._write_reg(URM13_SENSITIVITY_REG_I2C, [measure_sensitivity])
 
     def _uint16_to_int(self, num):
         '''!
@@ -342,8 +342,8 @@ class DFRobot_URM13_I2C(DFRobot_URM13):
     def __init__(self, i2c_addr=0x12, bus=1, interface_URM13=DFRobot_URM13.E_I2C_INTERFACE):
         '''!
           @brief Module I2C communication init
-          @param i2c_addr IIC communication address
-          @param bus IIC communication bus
+          @param i2c_addr I2C communication address
+          @param bus I2C communication bus
           @param interface_URM13 the current interface mode: E_RTU_INTERFACE, E_I2C_INTERFACE
         '''
         self._i2c_addr = i2c_addr
