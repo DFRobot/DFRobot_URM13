@@ -6,7 +6,7 @@
  * @copyright  Copyright (c) 2010 DFRobot Co.Ltd (http://www.dfrobot.com)
  * @license  The MIT License (MIT)
  * @author  [qsjhyy](yihuan.huang@dfrobot.com)
- * @version  V1.0.0
+ * @version  V1.0.1
  * @date  2021-09-18
  * @url  https://github.com/DFRobot/DFRobot_URM13
  */

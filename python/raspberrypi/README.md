@@ -158,7 +158,7 @@ Download the library file before use, paste them into the specified directory, t
 
 ## History
 
-- 2021/09/26 - Version 1.0.0 released.
+- 2021/09/26 - Version 1.0.1 released.
 
 
 ## Credits
