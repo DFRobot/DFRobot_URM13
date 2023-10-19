@@ -13,7 +13,7 @@
 import sys
 import time
 
-import smbus
+import smbus2
 
 import serial
 import modbus_tk
@@ -347,7 +347,7 @@ class DFRobot_URM13_I2C(DFRobot_URM13):
           @param interface_URM13 the current interface mode: E_RTU_INTERFACE, E_I2C_INTERFACE
         '''
         self._i2c_addr = i2c_addr
-        self._i2c = smbus.SMBus(bus)
+        self._i2c = smbus2.SMBus(bus)
         super(DFRobot_URM13_I2C, self).__init__(interface_URM13)
 
     def _write_reg(self, reg, data):
